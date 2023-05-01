@@ -1,0 +1,86 @@
+version: "3.8"
+
+networks:
+  pydock_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config: 
+        - subnet: 172.24.0.0/16
+          gateway: 172.24.0.1
+
+services:
+  postgresql:
+    build:
+      context: ./postgresql
+      args:
+        - POSTGRESQL_VERSION=${POSTGRESQL_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRESQL_VERSION}
+    environment:
+      - PGPORT=${POSTGRESQL_PORT}
+      - PGPASSWORD=${POSTGRESQL_ROOT_PASSWORD}
+      - POSTGRESQL_LOG_TIMEZONE=${TZ}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_ROOT_PASSWORD}
+      - POSTGRESQL_TIMEZONE=${TZ}
+    image: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRESQL_VERSION}
+    volumes:
+      - ${DATA_PATH_HOST}/postgresql:/bitnami/postgresql
+      - ./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "${POSTGRESQL_PORT}:${POSTGRESQL_PORT}"
+    networks:
+      - pydock_network
+
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - TZ=${TZ}
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx_${NGINX_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_nginx_${NGINX_VERSION}
+    ports:
+      - "${NGINX_HTTP}:80"
+      - "${NGINX_HTTPS}:443"
+    volumes:
+      - ${DATA_PATH_HOST}/nginx:/var/log/nginx
+      - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
+      - ${NGINX_SSL_PATH}:/etc/nginx/ssl
+    networks:
+      - pydock_network
+
+  node:
+    build:
+      context: ./node
+      args:
+        - INSTALL_VERSION=${NODE_VERSION}
+        - TZ=${TZ}
+    container_name: ${COMPOSE_PROJECT_NAME}_node_${NODE_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_node_${NODE_VERSION}
+    volumes:
+      - ${UI_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    ports:
+      - "${NODE_PORT}:${NODE_PORT}"
+    networks:
+      - pydock_network
+    tty: true
+
+  python:
+    build:
+      context: ./python
+      args:
+        - INSTALL_VERSION=${PYTHON_VERSION}
+        - INSTALL_PIPENV=${PYTHON_INSTALL_PIPENV}
+        - INSTALL_POETRY=${PYTHON_INSTALL_POETRY}
+        - REF_VERSION=${PYTHON_REF_VERSION}
+        - TZ=${TZ}
+    container_name: ${COMPOSE_PROJECT_NAME}_python_${PYTHON_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_python_${PYTHON_VERSION}
+    volumes:
+      - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    ports:
+      - "${PYTHON_PORT}:${PYTHON_PORT}"
+    networks:
+      - pydock_network
+    tty: true
+
