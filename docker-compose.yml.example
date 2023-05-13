@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  pydock_network:
+  dockerize_network:
     driver: bridge
     ipam:
       driver: default
@@ -29,7 +29,7 @@ services:
     ports:
       - "${POSTGRESQL_PORT}:${POSTGRESQL_PORT}"
     networks:
-      - pydock_network
+      - dockerize_network
 
   nginx:
     build:
@@ -47,7 +47,7 @@ services:
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
     networks:
-      - pydock_network
+      - dockerize_network
 
   node:
     build:
@@ -62,7 +62,7 @@ services:
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
     networks:
-      - pydock_network
+      - dockerize_network
     tty: true
 
   python:
@@ -81,6 +81,16 @@ services:
     ports:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
     networks:
-      - pydock_network
+      - dockerize_network
     tty: true
 
+  rust:
+    build:
+      context: ./rust
+    container_name: ${COMPOSE_PROJECT_NAME}_rust_${PYTHON_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_rust_${PYTHON_VERSION}
+    volumes:
+      - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    networks:
+      - dockerize_network
+    tty: true
