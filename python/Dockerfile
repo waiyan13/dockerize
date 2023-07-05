@@ -87,7 +87,10 @@ RUN set -xe; \
 RUN set -xe; \
   apt-get update -yqq && \
   apt-get install -yqq \
-    curl
+    curl \
+    git \
+    neovim \
+    libsqlite3-dev
 
 # Create directory for projects
 ARG PROJECTS_PATH=/var/www
