@@ -5,6 +5,6 @@ docker-compose.yml
 
 nginx/sites/*.conf
 
-postgresql/docker-entrypoint-initdb.d/*.sh
+postgres/docker-entrypoint-initdb.d/*.sh
 
 python/scripts/*.sh

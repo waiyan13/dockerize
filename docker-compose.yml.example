@@ -10,24 +10,24 @@ networks:
           gateway: 172.24.0.1
 
 services:
-  postgresql:
+  postgres:
     build:
-      context: ./postgresql
+      context: ./postgres
       args:
-        - POSTGRESQL_VERSION=${POSTGRESQL_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRESQL_VERSION}
+        - POSTGRES_VERSION=${POSTGRES_VERSION}
+        - TZ=${TZ}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRES_VERSION}
+    hostname: postgres
     environment:
-      - PGPORT=${POSTGRESQL_PORT}
-      - PGPASSWORD=${POSTGRESQL_ROOT_PASSWORD}
-      - POSTGRESQL_LOG_TIMEZONE=${TZ}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_ROOT_PASSWORD}
-      - POSTGRESQL_TIMEZONE=${TZ}
-    image: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRESQL_VERSION}
+      - PGPORT=${POSTGRES_PORT}
+      - PGTZ=UTC
+      - POSTGRES_PASSWORD=${POSTGRES_ROOT_PASSWORD}
+    image: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRES_VERSION}
     volumes:
-      - ${DATA_PATH_HOST}/postgresql:/bitnami/postgresql
-      - ./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "${POSTGRESQL_PORT}:${POSTGRESQL_PORT}"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     networks:
       - dockerize_network
 
