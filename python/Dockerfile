@@ -50,7 +50,7 @@ ENV HOME=/home/python
 RUN set -xe; \
   curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 
-ARG INSTALL_VERSION=3.11.1
+ARG INSTALL_VERSION=3.11.5
 ENV INSTALL_VERSION=${INSTALL_VERSION}
 
 RUN set -xe; \
@@ -112,7 +112,7 @@ ENV HOME=/home/python
 RUN mkdir -p ${HOME}/.pyenv
 
 # pyenv
-ARG INSTALL_VERSION=3.11.1
+ARG INSTALL_VERSION=3.11.5
 ARG REF_VERSION=3.11
 ENV INSTALL_VERSION=${INSTALL_VERSION}
 ENV REF_VERSION=${REF_VERSION}
