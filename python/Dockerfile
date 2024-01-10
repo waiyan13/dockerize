@@ -89,7 +89,6 @@ RUN set -xe; \
   apt-get install -yqq \
     curl \
     git \
-    neovim \
     libsqlite3-dev
 
 # Create directory for projects
@@ -125,25 +124,6 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH" \n\
 eval "$(pyenv init -)" \n\
 export PATH="$PYENV_ROOT/shims:$HOME/.local/bin:$PATH" \n\
 ' >> ${HOME}/.bashrc
-
-RUN echo '\n\
-export PYENV_ROOT="$HOME/.pyenv" \n\
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH" \n\
-eval "$(pyenv init -)" \n\
-export PATH="$PYENV_ROOT/shims:$HOME/.local/bin:$PATH" \n\
-' >> ${HOME}/.profile
-
-# Install pipenv
-ARG INSTALL_PIPENV=false
-ENV INSTALL_PIPENV=${INSTALL_PIPENV}
-ENV PIPENV_VENV_IN_PROJECT=1
-
-RUN set -xe; \
-  if [ ${INSTALL_PIPENV} = true ]; then \
-    ${HOME}/.pyenv/bin/pyenv global ${INSTALL_VERSION} && \
-    ${HOME}/.pyenv/bin/pyenv exec pip install --upgrade --user pip && \
-    ${HOME}/.pyenv/bin/pyenv exec pip install --user pipenv \
-  ;fi
 
 # Install Potery
 ARG INSTALL_POETRY=false
