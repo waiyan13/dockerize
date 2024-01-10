@@ -87,10 +87,26 @@ services:
   rust:
     build:
       context: ./rust
-    container_name: ${COMPOSE_PROJECT_NAME}_rust_${PYTHON_VERSION}
-    image: ${COMPOSE_PROJECT_NAME}_rust_${PYTHON_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
     volumes:
       - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    networks:
+      - dockerize_network
+    tty: true
+
+  go:
+    build:
+      context: ./go
+      args:
+        - GO_VERSION=${GO_VERSION}
+        - TZ=${TZ}
+    container_name: ${COMPOSE_PROJECT_NAME}_go_${GO_VERSION}
+    image: ${COMPOSE_PROJECT_NAME}_go_${GO_VERSION}
+    volumes:
+      - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    ports:
+      - "${GO_PORT}:${GO_PORT}"
     networks:
       - dockerize_network
     tty: true
