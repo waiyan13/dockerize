@@ -34,4 +34,6 @@ RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
 
 USER go
 
-EXPOSE 8080
+ARG GO_PORT
+
+EXPOSE ${GO_PORT}
