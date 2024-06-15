@@ -1,5 +1,3 @@
-version: "3.8"
-
 networks:
   dockerize_network:
     driver: bridge
@@ -87,10 +85,16 @@ services:
   rust:
     build:
       context: ./rust
+      args:
+        - RUST_VERSION=${RUST_VERSION}
+        - TZ=${TZ}
+        - RUST_PORT=${RUST_PORT}
     container_name: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
     image: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
     volumes:
       - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    ports:
+      - "${RUST_PORT}:${RUST_PORT}"
     networks:
       - dockerize_network
     tty: true
