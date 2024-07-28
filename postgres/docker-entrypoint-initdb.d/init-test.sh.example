@@ -5,7 +5,7 @@ default_user_and_db=postgres
 
 # Create user and database for keycloak
 psql -v ON_ERROR_STOP=1 --username "${default_user_and_db}" --dbname "${default_user_and_db}" <<-EOSQL
-    CREATE USER test_admin WITH ENCRYPTED PASSWORD '$POSTGRESQL_PASSWORD';
+    CREATE USER test_admin WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';
     CREATE DATABASE test WITH OWNER test_admin;
 EOSQL
 
