@@ -3,6 +3,8 @@
 .env
 docker-compose.yml
 
+dex/config.docker.yaml
+
 nginx/sites/*.conf
 
 postgres/docker-entrypoint-initdb.d/*.sh

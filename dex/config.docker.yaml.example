@@ -1,0 +1,43 @@
+issuer: {{ getenv "DEX_ISSUER" "http://127.0.0.1:5556"}}
+
+storage:
+  type: postgres
+  config:
+    host: {{ getenv "DEX_POSTGRES_HOST" "127.0.0.1:5432"}}
+    port: 5432
+    database: {{ getenv "DEX_POSTGRES_DB" "test"}}
+    user: {{ getenv "DEX_POSTGRES_USER" "admin"}}
+    password: {{ getenv "DEX_POSTGRES_PASSWORD" "password"}}
+    ssl:
+      mode: disable
+
+web:
+  http: {{ getenv "DEX_WEB_HTTP" "0.0.0.0:5556" }}
+
+expiry:
+  deviceRequests: {{ getenv "DEX_EXPIRY_DEVICE_REQUESTS" "5m" }}
+  signingKeys: {{ getenv "DEX_EXPIRY_SIGNING_KEYS" "6h" }}
+  idTokens: {{ getenv "DEX_EXPIRY_ID_TOKENS" "24h" }}
+  authRequests: {{ getenv "DEX_EXPIRY_AUTH_REQUESTS" "24h" }}
+
+logger:
+  level: {{ getenv "DEX_LOG_LEVEL" "info" }}
+  format: {{ getenv "DEX_LOG_FORMAT" "json" }}
+
+oauth2:
+  responseTypes: {{ getenv "DEX_OAUTH2_RESPONSE_TYPES" "[code]" }}
+  skipApprovalScreen: {{ getenv "DEX_OAUTH2_SKIP_APPROVAL_SCREEN" "false" }}
+  alwaysShowLoginScreen: {{ getenv "DEX_ALWAYS_SHOW_LOGIN_SCREEN" "false" }}
+
+grpc:
+  addr: {{ getenv "DEX_GRPC_ADDR" "127.0.0.1:5557" }}
+  reflection: true
+
+staticClients:
+  - id: client-id
+    public: true
+    name: "Client Name"
+    redirectURIs:
+      - "https://127.0.0.1/callback"
+
+enablePasswordDB: true

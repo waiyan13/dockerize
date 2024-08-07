@@ -138,3 +138,33 @@ services:
     networks:
       - dockerize_network
     tty: true
+
+  dex:
+    build:
+      context: ./dex
+      args:
+        - DEX_VERSION=${DEX_VERSION}
+        - DEX_PORT=${DEX_PORT}
+    image: ${COMPOSE_PROJECT_NAME}_dex_${DEX_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_dex_${KEYCLOAK_VERSION}
+    environment:
+      - DEX_ISSUER=${DEX_ISSUER}
+      - DEX_POSTGRES_HOST=${DEX_POSTGRES_HOST}
+      - DEX_POSTGRES_DB=${DEX_POSTGRES_DB}
+      - DEX_POSTGRES_USER=${DEX_POSTGRES_USER}
+      - DEX_POSTGRES_PASSWORD=${DEX_POSTGRES_PASSWORD}
+      - DEX_EXPIRY_DEVICE_REQUESTS=${DEX_EXPIRY_DEVICE_REQUESTS}
+      - DEX_EXPIRY_SIGNING_KEYS=${DEX_EXPIRY_SIGNING_KEYS}
+      - DEX_EXPIRY_ID_TOKENS=${DEX_EXPIRY_ID_TOKENS}
+      - DEX_EXPIRY_AUTH_REQUESTS=${DEX_EXPIRY_AUTH_REQUESTS}
+      - DEX_OAUTH2_RESPONSE_TYPES=${DEX_OAUTH2_RESPONSE_TYPES}
+      - DEX_OAUTH2_SKIP_APPROVAL_SCREEN=${DEX_OAUTH2_SKIP_APPROVAL_SCREEN}
+      - DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN=${DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN}
+      - DEX_GRPC_ADDR=${DEX_GRPC_ADDR}
+    volumes:
+      - ./dex/config.docker.yaml:/etc/dex/config.docker.yaml
+    ports:
+      - "${DEX_PORT}:${DEX_PORT}"
+    networks:
+      - dockerize_network
+    tty: true
