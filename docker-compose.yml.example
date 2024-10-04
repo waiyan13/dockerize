@@ -1,5 +1,5 @@
 networks:
-  dockerize_network:
+  nw:
     driver: bridge
     ipam:
       driver: default
@@ -27,7 +27,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     networks:
-      - dockerize_network
+      - nw
 
   nginx:
     build:
@@ -45,7 +45,7 @@ services:
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
     networks:
-      - dockerize_network
+      - nw
 
   node:
     build:
@@ -60,7 +60,7 @@ services:
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
     networks:
-      - dockerize_network
+      - nw
     tty: true
 
   python:
@@ -79,7 +79,7 @@ services:
     ports:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
     networks:
-      - dockerize_network
+      - nw
     tty: true
 
   rust:
@@ -96,7 +96,7 @@ services:
     ports:
       - "${RUST_PORT}:${RUST_PORT}"
     networks:
-      - dockerize_network
+      - nw
     tty: true
 
   go:
@@ -113,7 +113,7 @@ services:
     ports:
       - "${GO_PORT}:${GO_PORT}"
     networks:
-      - dockerize_network
+      - nw
     tty: true
 
   keycloak:
@@ -136,7 +136,7 @@ services:
     ports:
       - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
     networks:
-      - dockerize_network
+      - nw
     tty: true
 
   dex:
@@ -166,5 +166,5 @@ services:
     ports:
       - "${DEX_PORT}:${DEX_PORT}"
     networks:
-      - dockerize_network
+      - nw
     tty: true
