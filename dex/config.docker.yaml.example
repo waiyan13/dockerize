@@ -15,10 +15,13 @@ web:
   http: {{ getenv "DEX_WEB_HTTP" "0.0.0.0:5556" }}
 
 expiry:
-  deviceRequests: {{ getenv "DEX_EXPIRY_DEVICE_REQUESTS" "5m" }}
-  signingKeys: {{ getenv "DEX_EXPIRY_SIGNING_KEYS" "6h" }}
-  idTokens: {{ getenv "DEX_EXPIRY_ID_TOKENS" "24h" }}
   authRequests: {{ getenv "DEX_EXPIRY_AUTH_REQUESTS" "24h" }}
+  deviceRequests: {{ getenv "DEX_EXPIRY_DEVICE_REQUESTS" "5m" }}
+  idTokens: {{ getenv "DEX_EXPIRY_ID_TOKENS" "24h" }}
+  refreshTokens:
+    absoluteLifetime: {{ getenv "DEX_EXPIRY_REFRESH_TOKEN" "1h" }}
+    validIfNotUsedFor: {{ getenv "DEX_EXPIRY_REFRESH_TOKEN_INVALID" "1h" }}
+  signingKeys: {{ getenv "DEX_EXPIRY_SIGNING_KEYS" "6h" }}
 
 logger:
   level: {{ getenv "DEX_LOG_LEVEL" "info" }}
