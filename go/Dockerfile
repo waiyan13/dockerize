@@ -1,11 +1,11 @@
-ARG GO_VERSION=1.21
-FROM golang:${GO_VERSION}-alpine as builder
+ARG GO_VERSION=1.23
+FROM golang:${GO_VERSION}-bullseye
 
 USER root
 
-RUN apk update && \
-  apk upgrade && \
-  apk add tzdata
+RUN apt-get update && \
+  apt-get upgrade -yqq && \
+  apt-get install -yqq git
 
 # Create non-root user
 ARG PUID=1000
@@ -14,9 +14,14 @@ ARG PGID=1000
 ENV PGID=${PGID}
 
 # Add go user
-RUN set -x ; \
-  addgroup -g ${PGID} -S go ; \
-  adduser -u ${PUID} -D -S -G go go && exit 0 ; exit 1
+RUN set -xe; \
+  groupadd --gid ${PGID} go && \
+  useradd \
+    --uid ${PUID} \
+    --gid ${PGID} \
+    --no-log-init \
+    --create-home \
+    go
 
 # Create directory for projects
 ARG PROJECTS_PATH=/var/www
@@ -29,8 +34,7 @@ RUN mkdir -p ${PROJECTS_PATH} && \
 ARG TZ=UTC
 ENV TZ=${TZ}
 
-RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
-  echo ${TZ} > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 USER go
 
