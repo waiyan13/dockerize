@@ -89,7 +89,20 @@ RUN set -xe; \
   apt-get install -yqq \
     curl \
     git \
-    libsqlite3-dev
+    gnupg \
+    libsqlite3-dev \
+    lsb-release
+
+# Install Tesseract
+RUN set -xe; \
+  install -m 0755 -d /etc/apt/keyrings && \
+  curl -fsSL https://notesalexp.org/debian/alexp_key.asc -o /etc/apt/keyrings/alexp_key.asc && \
+  chmod a+r /etc/apt/keyrings/alexp_key.asc && \
+  echo "deb [signed-by=/etc/apt/keyrings/alexp_key.asc] https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ \
+  $(lsb_release -cs) main" | \
+  tee /etc/apt/sources.list.d/notesalexp.list > /dev/null && \
+  apt-get update -yqq && \
+  apt-get install -yqq tesseract-ocr
 
 # Create directory for projects
 ARG PROJECTS_PATH=/var/www
