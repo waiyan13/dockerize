@@ -41,7 +41,7 @@ ENV NVM_DIR=${HOME}/.nvm
 
 # Install NVM
 RUN mkdir -p ${NVM_DIR} && \
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
   . ${NVM_DIR}/nvm.sh
 
 RUN echo '\n\
