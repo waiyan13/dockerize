@@ -56,7 +56,7 @@ RUN set -xe; \
   . ${NVM_DIR}/nvm.sh && \
   nvm install ${INSTALL_VERSION} && \
   nvm use ${INSTALL_VERSION} && \
-  npm install -g npm@latest
+  curl -fsSL https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
 
 USER node
 
