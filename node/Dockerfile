@@ -1,4 +1,6 @@
-FROM debian:11-slim
+FROM debian:12-slim
+
+ENV DEBIAN_FRONTEND noninteractive
 
 USER root
 

@@ -1,5 +1,5 @@
 ARG RUST_VERSION=1.76
-FROM rust:${RUST_VERSION}-bullseye
+FROM rust:${RUST_VERSION}-bookworm
 
 ENV DEBIAN_FRONTEND noninteractive
 

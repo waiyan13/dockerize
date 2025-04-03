@@ -1,5 +1,5 @@
 ARG GO_VERSION=1.23
-FROM golang:${GO_VERSION}-bullseye
+FROM golang:${GO_VERSION}-bookworm
 
 USER root
 
