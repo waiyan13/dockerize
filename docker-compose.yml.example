@@ -82,22 +82,22 @@ services:
       - nw
     tty: true
 
-  rust:
-    build:
-      context: ./rust
-      args:
-        - RUST_VERSION=${RUST_VERSION}
-        - TZ=${TZ}
-        - RUST_PORT=${RUST_PORT}
-    container_name: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
-    image: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
-    volumes:
-      - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-    ports:
-      - "${RUST_PORT}:${RUST_PORT}"
-    networks:
-      - nw
-    tty: true
+  #rust:
+  #  build:
+  #    context: ./rust
+  #    args:
+  #      - RUST_VERSION=${RUST_VERSION}
+  #      - TZ=${TZ}
+  #      - RUST_PORT=${RUST_PORT}
+  #  container_name: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
+  #  image: ${COMPOSE_PROJECT_NAME}_rust_${RUST_VERSION}
+  #  volumes:
+  #    - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+  #  ports:
+  #    - "${RUST_PORT}:${RUST_PORT}"
+  #  networks:
+  #    - nw
+  #  tty: true
 
   go:
     build:
@@ -116,57 +116,57 @@ services:
       - nw
     tty: true
 
-  keycloak:
-    build:
-      context: ./keycloak
-      args:
-        - KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
-        - KEYCLOAK_DATABASE=${KEYCLOAK_DATABASE}
-    container_name: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
-    environment:
-      - KC_DB=${KEYCLOAK_DATABASE}
-      - KC_DB_URL_HOST=${KEYCLOAK_DATABASE}
-      - KC_DB_USERNAME=${KEYCLOAK_DATABASE_USERNAME}
-      - KC_DB_PASSWORD=${KEYCLOAK_DATABASE_PASSWORD}
-      - KC_DB_URL=${KEYCLOAK_DATABASE_URL}
-      - KC_PROXY=edge
-      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
-      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-    image: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
-    ports:
-      - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
-    networks:
-      - nw
-    tty: true
+  #keycloak:
+  #  build:
+  #    context: ./keycloak
+  #    args:
+  #      - KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
+  #      - KEYCLOAK_DATABASE=${KEYCLOAK_DATABASE}
+  #  container_name: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
+  #  environment:
+  #    - KC_DB=${KEYCLOAK_DATABASE}
+  #    - KC_DB_URL_HOST=${KEYCLOAK_DATABASE}
+  #    - KC_DB_USERNAME=${KEYCLOAK_DATABASE_USERNAME}
+  #    - KC_DB_PASSWORD=${KEYCLOAK_DATABASE_PASSWORD}
+  #    - KC_DB_URL=${KEYCLOAK_DATABASE_URL}
+  #    - KC_PROXY=edge
+  #    - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+  #    - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+  #  image: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
+  #  ports:
+  #    - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
+  #  networks:
+  #    - nw
+  #  tty: true
 
-  dex:
-    build:
-      context: ./dex
-      args:
-        - DEX_VERSION=${DEX_VERSION}
-        - DEX_PORT=${DEX_PORT}
-    image: ${COMPOSE_PROJECT_NAME}_dex_${DEX_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}_dex_${KEYCLOAK_VERSION}
-    environment:
-      - DEX_ISSUER=${DEX_ISSUER}
-      - DEX_POSTGRES_HOST=${DEX_POSTGRES_HOST}
-      - DEX_POSTGRES_DB=${DEX_POSTGRES_DB}
-      - DEX_POSTGRES_USER=${DEX_POSTGRES_USER}
-      - DEX_POSTGRES_PASSWORD=${DEX_POSTGRES_PASSWORD}
-      - DEX_EXPIRY_DEVICE_REQUESTS=${DEX_EXPIRY_DEVICE_REQUESTS}
-      - DEX_EXPIRY_SIGNING_KEYS=${DEX_EXPIRY_SIGNING_KEYS}
-      - DEX_EXPIRY_ID_TOKENS=${DEX_EXPIRY_ID_TOKENS}
-      - DEX_EXPIRY_AUTH_REQUESTS=${DEX_EXPIRY_AUTH_REQUESTS}
-      - DEX_EXPIRY_REFRESH_TOKEN=${DEX_EXPIRY_REFRESH_TOKEN}
-      - DEX_EXPIRY_REFRESH_TOKEN_INVALID=${DEX_EXPIRY_REFRESH_TOKEN_INVALID}
-      - DEX_OAUTH2_RESPONSE_TYPES=${DEX_OAUTH2_RESPONSE_TYPES}
-      - DEX_OAUTH2_SKIP_APPROVAL_SCREEN=${DEX_OAUTH2_SKIP_APPROVAL_SCREEN}
-      - DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN=${DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN}
-      - DEX_GRPC_ADDR=${DEX_GRPC_ADDR}
-    volumes:
-      - ./dex/config.docker.yaml:/etc/dex/config.docker.yaml
-    ports:
-      - "${DEX_PORT}:${DEX_PORT}"
-    networks:
-      - nw
-    tty: true
+  #dex:
+  #  build:
+  #    context: ./dex
+  #    args:
+  #      - DEX_VERSION=${DEX_VERSION}
+  #      - DEX_PORT=${DEX_PORT}
+  #  image: ${COMPOSE_PROJECT_NAME}_dex_${DEX_VERSION}
+  #  container_name: ${COMPOSE_PROJECT_NAME}_dex_${KEYCLOAK_VERSION}
+  #  environment:
+  #    - DEX_ISSUER=${DEX_ISSUER}
+  #    - DEX_POSTGRES_HOST=${DEX_POSTGRES_HOST}
+  #    - DEX_POSTGRES_DB=${DEX_POSTGRES_DB}
+  #    - DEX_POSTGRES_USER=${DEX_POSTGRES_USER}
+  #    - DEX_POSTGRES_PASSWORD=${DEX_POSTGRES_PASSWORD}
+  #    - DEX_EXPIRY_DEVICE_REQUESTS=${DEX_EXPIRY_DEVICE_REQUESTS}
+  #    - DEX_EXPIRY_SIGNING_KEYS=${DEX_EXPIRY_SIGNING_KEYS}
+  #    - DEX_EXPIRY_ID_TOKENS=${DEX_EXPIRY_ID_TOKENS}
+  #    - DEX_EXPIRY_AUTH_REQUESTS=${DEX_EXPIRY_AUTH_REQUESTS}
+  #    - DEX_EXPIRY_REFRESH_TOKEN=${DEX_EXPIRY_REFRESH_TOKEN}
+  #    - DEX_EXPIRY_REFRESH_TOKEN_INVALID=${DEX_EXPIRY_REFRESH_TOKEN_INVALID}
+  #    - DEX_OAUTH2_RESPONSE_TYPES=${DEX_OAUTH2_RESPONSE_TYPES}
+  #    - DEX_OAUTH2_SKIP_APPROVAL_SCREEN=${DEX_OAUTH2_SKIP_APPROVAL_SCREEN}
+  #    - DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN=${DEX_OAUTH2_ALWAYS_SHOW_LOGIN_SCREEN}
+  #    - DEX_GRPC_ADDR=${DEX_GRPC_ADDR}
+  #  volumes:
+  #    - ./dex/config.docker.yaml:/etc/dex/config.docker.yaml
+  #  ports:
+  #    - "${DEX_PORT}:${DEX_PORT}"
+  #  networks:
+  #    - nw
+  #  tty: true
