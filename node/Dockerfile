@@ -1,6 +1,6 @@
 FROM debian:12-slim
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 
