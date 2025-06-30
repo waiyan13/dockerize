@@ -1,5 +1,5 @@
-ARG KEYCLOAK_VERSION
-FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION} as builder
+ARG KEYCLOAK_VERSION=26.2.5
+FROM quay.io/keycloak/keycloak:${KEYCLOAK_VERSION} AS builder
 
 # Enable health and metrics support
 ENV KC_HEALTH_ENABLED=true
