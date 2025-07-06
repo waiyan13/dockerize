@@ -186,3 +186,13 @@ services:
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
       - nw
+
+  swagger:
+    image: docker.swagger.io/swaggerapi/swagger-editor
+    container_name: ${COMPOSE_PROJECT_NAME}_swagger_editor
+    environment:
+      PORT: ${SWAGGER_HTTP_PORT} 
+    ports:
+      - "${SWAGGER_HTTP_PORT}:${SWAGGER_HTTP_PORT}"
+    networks:
+      - nw
