@@ -1,5 +1,5 @@
 networks:
-  nw:
+  default:
     driver: bridge
     ipam:
       driver: default
@@ -24,8 +24,6 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    networks:
-      - nw
 
   nginx:
     build:
@@ -43,7 +41,8 @@ services:
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
     networks:
-      - nw
+      default:
+        ipv4_address: 172.24.0.2
 
   node:
     build:
@@ -55,10 +54,9 @@ services:
     image: ${COMPOSE_PROJECT_NAME}_node_${NODE_VERSION}
     volumes:
       - ${UI_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - /home/waiyan13/.local/share/pnpm:/home/node/.local/share/pnpm
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
-    networks:
-      - nw
     tty: true
 
   python:
@@ -74,8 +72,6 @@ services:
       - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
     ports:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
-    networks:
-      - nw
     tty: true
 
   #rust:
@@ -91,8 +87,6 @@ services:
   #    - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
   #  ports:
   #    - "${RUST_PORT}:${RUST_PORT}"
-  #  networks:
-  #    - nw
   #  tty: true
 
   go:
@@ -108,8 +102,6 @@ services:
       - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
     ports:
       - "${GO_PORT}:${GO_PORT}"
-    networks:
-      - nw
     tty: true
 
   keycloak:
@@ -134,8 +126,6 @@ services:
     image: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
     ports:
       - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
-    networks:
-      - nw
     tty: true
 
   #dex:
@@ -166,8 +156,6 @@ services:
   #    - ./dex/config.docker.yaml:/etc/dex/config.docker.yaml
   #  ports:
   #    - "${DEX_PORT}:${DEX_PORT}"
-  #  networks:
-  #    - nw
   #  tty: true
 
   mailpit:
@@ -184,8 +172,6 @@ services:
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
-    networks:
-      - nw
 
   swagger:
     image: docker.swagger.io/swaggerapi/swagger-editor
@@ -194,5 +180,3 @@ services:
       PORT: ${SWAGGER_HTTP_PORT} 
     ports:
       - "${SWAGGER_HTTP_PORT}:${SWAGGER_HTTP_PORT}"
-    networks:
-      - nw
