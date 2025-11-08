@@ -24,6 +24,9 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      default:
+        ipv4_address: 172.24.0.2
 
   nginx:
     build:
@@ -42,7 +45,7 @@ services:
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
     networks:
       default:
-        ipv4_address: 172.24.0.2
+        ipv4_address: 172.24.0.3
 
   node:
     build:
@@ -57,6 +60,9 @@ services:
       - /home/waiyan13/.local/share/pnpm:/home/node/.local/share/pnpm
     ports:
       - "${NODE_PORT}:${NODE_PORT}"
+    networks:
+      default:
+        ipv4_address: 172.24.0.4
     tty: true
 
   python:
