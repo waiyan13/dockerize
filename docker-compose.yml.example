@@ -14,13 +14,17 @@ services:
       args:
         - POSTGRES_VERSION=${POSTGRES_VERSION}
         - TZ=${TZ}
-    container_name: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRES_VERSION}
     hostname: postgres
     environment:
       - PGPORT=${POSTGRES_PORT}
       - PGTZ=UTC
       - POSTGRES_PASSWORD=${POSTGRES_ROOT_PASSWORD}
-    image: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRES_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres_${POSTGRES_VERSION}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
@@ -78,6 +82,9 @@ services:
       - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
     ports:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
+    networks:
+      default:
+        ipv4_address: 172.24.0.5
     tty: true
 
   #rust:
@@ -108,6 +115,9 @@ services:
       - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
     ports:
       - "${GO_PORT}:${GO_PORT}"
+    networks:
+      default:
+        ipv4_address: 172.24.0.6
     tty: true
 
   keycloak:
@@ -116,6 +126,10 @@ services:
       args:
         - KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
         - KEYCLOAK_DATABASE=${KEYCLOAK_DATABASE}
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
     container_name: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
     environment:
       - KC_DB=${KEYCLOAK_DATABASE}
@@ -132,6 +146,9 @@ services:
     image: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}
     ports:
       - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
+    networks:
+      default:
+        ipv4_address: 172.24.0.7
     tty: true
 
   #dex:
@@ -173,6 +190,9 @@ services:
     ports:
       - "${MAILPIT_SMTP_PORT}:${MAILPIT_SMTP_PORT}"
       - "${MAILPIT_HTTP_PORT}:${MAILPIT_HTTP_PORT}"
+    networks:
+      default:
+        ipv4_address: 172.24.0.8
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATABASE: /data/mailpit.db
@@ -186,3 +206,6 @@ services:
       PORT: ${SWAGGER_HTTP_PORT} 
     ports:
       - "${SWAGGER_HTTP_PORT}:${SWAGGER_HTTP_PORT}"
+    networks:
+      default:
+        ipv4_address: 172.24.0.9
