@@ -36,6 +36,11 @@ ENV TZ=${TZ}
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
+COPY --from=ca_certs ./rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
+
+RUN set -xe; \
+  update-ca-certificates
+
 USER go
 
 ARG GO_PORT
