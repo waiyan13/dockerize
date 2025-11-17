@@ -105,6 +105,8 @@ services:
   go:
     build:
       context: ./go
+      additional_contexts:
+        - ca_certs=./nginx/ssl
       args:
         - GO_VERSION=${GO_VERSION}
         - TZ=${TZ}
@@ -118,6 +120,8 @@ services:
     networks:
       default:
         ipv4_address: 172.24.0.6
+    extra_hosts:
+      - "keycloak.test:172.24.0.3"
     tty: true
 
   keycloak:
