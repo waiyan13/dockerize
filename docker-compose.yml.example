@@ -32,6 +32,31 @@ services:
       default:
         ipv4_address: 172.24.0.2
 
+  mariadb:
+    build:
+      context: ./mariadb
+      args:
+        - MARIADB_VERSION=${MARIADB_VERSION}
+        - TZ=${TZ}
+    hostname: mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb_${MARIADB_VERSION}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "${MARIADB_PORT}:3306"
+    volumes:
+      - ${DATA_PATH_HOST}/mariadb:/var/lib/mysql
+      - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      default:
+        ipv4_address: 172.24.0.10
+
   nginx:
     build:
       context: ./nginx
@@ -131,7 +156,7 @@ services:
         - KEYCLOAK_VERSION=${KEYCLOAK_VERSION}
         - KEYCLOAK_DATABASE=${KEYCLOAK_DATABASE}
     depends_on:
-      postgres:
+      mariadb:
         condition: service_healthy
         restart: true
     container_name: ${COMPOSE_PROJECT_NAME}_keycloak_${KEYCLOAK_VERSION}

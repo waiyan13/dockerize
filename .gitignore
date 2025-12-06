@@ -7,6 +7,7 @@ dex/config.docker.yaml
 
 nginx/sites/*.conf
 
+mariadb/docker-entrypoint-initdb.d/*.sh
 postgres/docker-entrypoint-initdb.d/*.sh
 
 python/scripts/*.sh

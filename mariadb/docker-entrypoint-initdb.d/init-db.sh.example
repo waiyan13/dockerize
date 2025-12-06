@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e 
+
+root_user=root
+db_pass="$MARIADB_ROOT_PASSWORD"
+
+until mariadb -u root -p"$MARIADB_ROOT_PASSWORD" -e "SELECT 1;" > /dev/null 2>&1; do
+    echo "MariaDB is not available yet"
+    sleep 5
+done
+
+echo "MariaDB is available. Starting the script"
+
+mariadb -uroot -p"$MARIADB_ROOT_PASSWORD" <<-EOSQL
+    CREATE DATABASE IF NOT EXISTS \`db\`;
+
+    CREATE OR REPLACE USER 'db_admin'@'%' IDENTIFIED BY '$db_pass';
+
+    GRANT ALL PRIVILEGES ON \`db\`.* TO 'db_admin'@'%';
+
+    FLUSH PRIVILEGES;
+EOSQL
+
+echo "Successfully executed the script."
