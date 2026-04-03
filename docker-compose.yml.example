@@ -55,7 +55,7 @@ services:
       - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.10
+        ipv4_address: 172.24.0.3
 
   nginx:
     build:
@@ -74,7 +74,7 @@ services:
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.3
+        ipv4_address: 172.24.0.4
 
   node:
     build:
@@ -91,7 +91,7 @@ services:
       - "${NODE_PORT}:${NODE_PORT}"
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.4
+        ipv4_address: 172.24.0.5
     tty: true
 
   python:
@@ -109,7 +109,7 @@ services:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.5
+        ipv4_address: 172.24.0.6
     tty: true
 
   #rust:
@@ -125,6 +125,9 @@ services:
   #    - ${API_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
   #  ports:
   #    - "${RUST_PORT}:${RUST_PORT}"
+  #  networks:
+  #    nexasea_default:
+  #      ipv4_address: 10.202.1.7
   #  tty: true
 
   go:
@@ -144,9 +147,9 @@ services:
       - "${GO_PORT}:${GO_PORT}"
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.6
+        ipv4_address: 172.24.0.8
     extra_hosts:
-      - "keycloak.test:172.24.0.3"
+      - "keycloak.test:172.24.0.4"
     tty: true
 
   keycloak:
@@ -177,7 +180,7 @@ services:
       - ${KEYCLOAK_PORT}:${KEYCLOAK_PORT}
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.7
+        ipv4_address: 172.24.0.9
     tty: true
 
   #dex:
@@ -208,6 +211,9 @@ services:
   #    - ./dex/config.docker.yaml:/etc/dex/config.docker.yaml
   #  ports:
   #    - "${DEX_PORT}:${DEX_PORT}"
+  #  networks:
+  #    nexasea_default:
+  #      ipv4_address: 10.202.1.10
   #  tty: true
 
   mailpit:
@@ -221,7 +227,7 @@ services:
       - "${MAILPIT_HTTP_PORT}:${MAILPIT_HTTP_PORT}"
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.8
+        ipv4_address: 172.24.0.11
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATABASE: /data/mailpit.db
@@ -237,4 +243,4 @@ services:
       - "${SWAGGER_HTTP_PORT}:${SWAGGER_HTTP_PORT}"
     networks:
       <org>_default:
-        ipv4_address: 172.24.0.9
+        ipv4_address: 172.24.0.12
