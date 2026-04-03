@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.13
 FROM python:${PYTHON_VERSION}-bookworm
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -63,7 +63,7 @@ ENV PATH="/home/python/.local/bin/:$PATH"
 
 USER python
 
-ARG UV_VERSION=0.6.5
+ARG UV_VERSION=0.11.3
 ENV UV_VERSION=${UV_VERSION}
 ENV HOME=/home/python
 

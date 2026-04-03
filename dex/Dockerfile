@@ -1,4 +1,4 @@
-ARG DEX_VERSION=2.41.0
+ARG DEX_VERSION=2.45.1
 FROM dexidp/dex:v${DEX_VERSION}-alpine
 
 USER root

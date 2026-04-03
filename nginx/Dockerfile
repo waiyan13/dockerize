@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.27
+ARG NGINX_VERSION=1.29
 FROM nginx:${NGINX_VERSION}-alpine
 
 RUN apk update && \
