@@ -8,6 +8,8 @@ dex/config.docker.yaml
 nginx/sites/*.conf
 
 mariadb/docker-entrypoint-initdb.d/*.sh
+mongo/docker-entrypoint-initdb.d/*.js
+mongo/docker-entrypoint-initdb.d/*.sh
 postgres/docker-entrypoint-initdb.d/*.sh
 
 python/scripts/*.sh

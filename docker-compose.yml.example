@@ -246,3 +246,24 @@ services:
     networks:
       <org>_default:
         ipv4_address: 172.24.0.12
+
+  mongodb:
+    image: mongo-${MONGO_VERSION}-noble
+    container_name: ${COMPOSE_PROJECT_NAME}_vaudit_mongo_${MONGO_VERSION}
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"
+    volumes:
+      - ./mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ${DATA_PATH_HOST}/mongo:/data/db
+    networks:
+      vaudit_default:
+        ipv4_address: 172.24.0.13
