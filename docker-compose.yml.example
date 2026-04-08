@@ -248,7 +248,7 @@ services:
         ipv4_address: 172.24.0.12
 
   mongodb:
-    image: mongo-${MONGO_VERSION}-noble
+    image: mongo:${MONGO_VERSION}-noble
     container_name: ${COMPOSE_PROJECT_NAME}_vaudit_mongo_${MONGO_VERSION}
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
