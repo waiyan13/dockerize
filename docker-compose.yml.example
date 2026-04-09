@@ -249,7 +249,7 @@ services:
 
   mongodb:
     image: mongo:${MONGO_VERSION}-noble
-    container_name: ${COMPOSE_PROJECT_NAME}_vaudit_mongo_${MONGO_VERSION}
+    container_name: ${COMPOSE_PROJECT_NAME}_<org>_mongo_${MONGO_VERSION}
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -267,3 +267,20 @@ services:
     networks:
       vaudit_default:
         ipv4_address: 172.24.0.13
+
+  redis:
+    image: redis:${REDIS_VERSION}-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_<org>_redis_${REDIS_VERSION}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - ${DATA_PATH_HOST}/redis:/data
+    networks:
+      vaudit_default:
+        ipv4_address: 172.24.0.14
