@@ -12,4 +12,6 @@ mongo/docker-entrypoint-initdb.d/*.js
 mongo/docker-entrypoint-initdb.d/*.sh
 postgres/docker-entrypoint-initdb.d/*.sh
 
+promtail/*.yml
+
 python/scripts/*.sh

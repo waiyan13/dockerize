@@ -265,7 +265,7 @@ services:
       - ./mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ${DATA_PATH_HOST}/mongo:/data/db
     networks:
-      vaudit_default:
+      <org>_default:
         ipv4_address: 172.24.0.13
 
   redis:
@@ -282,5 +282,39 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/redis:/data
     networks:
-      vaudit_default:
+      <org>_default:
         ipv4_address: 172.24.0.14
+
+  loki:
+    image: grafana/loki:${LOKI_VERSION}
+    command: -config.file=/etc/loki/local-config.yaml
+    container_name: ${COMPOSE_PROJECT_NAME}_<org>_loki_${LOKI_VERSION}
+    ports:
+      - "${LOKI_PORT}:${LOKI_PORT}"
+    networks:
+      <org>_default:
+        ipv4_address: 172.24.0.15
+
+  promtail:
+    image: grafana/promtail:${PROMTAIL_VERSION}
+    command: -config.file=/etc/promtail/config.yml
+    container_name: ${COMPOSE_PROJECT_NAME}_<org>_promtail_${PROMTAIL_VERSION}
+    volumes:
+      - /var/log:/var/log
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail:/etc/promtail
+    ports:
+      - "${PROMTAIL_PORT}:${PROMTAIL_PORT}"
+    networks:
+      <org>_default:
+        ipv4_address: 172.24.0.16
+
+  grafana:
+    image: grafana/grafana:main
+    container_name: ${COMPOSE_PROJECT_NAME}_<org>_grafana
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    networks:
+      <org>_default:
+        ipv4_address: 172.24.0.17
