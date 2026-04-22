@@ -22,7 +22,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_<org>_postgres_${POSTGRES_VERSION}
     image: ${COMPOSE_PROJECT_NAME}_<org>_postgres_${NGINX_VERSION}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
